@@ -120,6 +120,7 @@ CONFIG_PACKAGE_luci-app-diskman_INCLUDE_lsblk=y
 # CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_V2ray_Plugin is not set
 
 CONFIG_PACKAGE_luci-app-passwall2=y
+CONFIG_PACKAGE_sing-box=y
 
 
 # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ChinaDNS_NG is not set
