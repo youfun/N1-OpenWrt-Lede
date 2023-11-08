@@ -115,7 +115,7 @@ jobs:
         GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
 
     - name: Create release
-      uses: youfun/N1-OpenWrt-Lede@v1
+      uses: youfun/N1-OpenWrt-Lede@@master
       with:
         tag: OpenWrt_s905d_${{ env.PACKAGED_OUTPUTDATE }}
         name: N1-OpenWrt | ${{ env.DATE }}
