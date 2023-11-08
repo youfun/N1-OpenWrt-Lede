@@ -114,14 +114,14 @@ jobs:
         WHOAMI: CHH
         GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
 
-    - name: Create release
-      uses: youfun/N1-OpenWrt-Lede@@master
+    - name: Upload firmware to release 
+      uses: softprops/action-gh-release@master
+      if: ${{ env.PACKAGED_STATUS == 'success' }} && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag: OpenWrt_s905d_${{ env.PACKAGED_OUTPUTDATE }}
-        name: N1-OpenWrt | ${{ env.DATE }}
-        allowUpdates: true
-        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
-        token: ${{ secrets.RELEASES_TOKEN }}
+        tag_name: OpenWrt_${{ env.PACKAGED_OUTPUTDATE }}
+        files: ${{ env.PACKAGED_OUTPUTPATH }}/*.img.xz
         body: |
           N1 OpenWrt 精简版本
                                     
