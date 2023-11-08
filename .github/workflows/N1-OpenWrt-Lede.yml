@@ -138,11 +138,20 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
         
-    - name: Delete older workflow runs and artifacts
-      uses: Mattraks/delete-workflow-runs@v2
-      if: env.DELETE_ARTIFACTS == 'true'
+    # - name: Delete older workflow runs and artifacts
+    #   uses: Mattraks/delete-workflow-runs@v2
+    #   if: env.DELETE_ARTIFACTS == 'true'
+    #   with:
+    #       token: ${{ secrets.RELEASES_TOKEN }}
+    #       repository: ${{ github.repository }}
+    #       retain_days: ${{ env.KEEP_DAY }}
+    #       keep_minimum_runs: ${{ env.KEEP_MININUM_RUNS }}
+
+
+    - name: Delete old releases
+      uses: dev-drprasad/delete-older-releases@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-          token: ${{ secrets.RELEASES_TOKEN }}
-          repository: ${{ github.repository }}
-          retain_days: ${{ env.KEEP_DAY }}
-          keep_minimum_runs: ${{ env.KEEP_MININUM_RUNS }}
+        keep_latest: 2
+        delete_tags : true
