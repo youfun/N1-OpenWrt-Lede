@@ -134,3 +134,11 @@ config rule
 	option proto 'icmp'
 	list icmp_type 'router-advertisement'
 	option target 'REJECT'
+
+
+config zone 'docker'
+	option input 'ACCEPT'
+	option output 'ACCEPT'
+	option forward 'ACCEPT'
+	option name 'docker'
+	list network 'docker'
