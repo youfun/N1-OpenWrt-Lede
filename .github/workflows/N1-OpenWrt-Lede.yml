@@ -104,43 +104,45 @@ jobs:
         du -h --max-depth=1 ./bin
         echo "::set-output name=status::success"
 
-    # - name: Package Armvirt as OpenWrt
-    #   uses: ophub/flippy-openwrt-actions@main
-    #   env:
-    #     OPENWRT_ARMVIRT: openwrt/bin/targets/*/*/*.tar.gz
-    #     PACKAGE_SOC: s905d
-    #     KERNEL_VERSION_NAME: 5.15.48_6.1.6
-    #     KERNEL_AUTO_LATEST: true
-    #     WHOAMI: CHH
-    #     GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
-    
-      - name: Package armvirt as openwrt
-        if: ${{ env.compile_status }} == 'success' && !cancelled()
-        uses: unifreq/openwrt_packit@master
-        env:
-          OPENWRT_ARMVIRT: openwrt/bin/targets/*/*/*.tar.gz
-          KERNEL_VERSION_NAME: 5.15.48_6.1.6
-          PACKAGE_SOC: s905d
-          GZIP_IMGS: .xz
-          SW_FLOWOFFLOAD: 0
-          SFE_FLOW: 0
-          ENABLE_WIFI_K510: 0
-
-        
-    - name: Upload firmware to release 
-      uses: softprops/action-gh-release@master
-      if: ${{ env.PACKAGED_STATUS == 'success' }} && !cancelled()
+    - name: Package Armvirt as OpenWrt
+      uses: ophub/flippy-openwrt-actions@main
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OPENWRT_ARMVIRT: openwrt/bin/targets/*/*/*.tar.gz
+        PACKAGE_SOC: s905d
+        KERNEL_VERSION_NAME: 5.15.48_6.1.6
+        KERNEL_AUTO_LATEST: true
+        WHOAMI: CHH
+        GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+
+    - name: Create release
+      uses: ncipollo/release-action@v1
       with:
-        tag_name: OpenWrt_${{ env.PACKAGED_OUTPUTDATE }}
-        files: ${{ env.PACKAGED_OUTPUTPATH }}/*.img.xz
+        tag: OpenWrt_s905d_${{ env.PACKAGED_OUTPUTDATE }}
+        name: N1-OpenWrt | ${{ env.DATE }}
+        allowUpdates: true
+        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
+        token: ${{ secrets.RELEASES_TOKEN }}
         body: |
           N1 OpenWrt 精简版本
                                     
-            * 默认IP：192.168.1.200
+            * 默认IP：192.168.1.3
             默认用户名：root
             默认密码：password
             安装到EMMC及在线更新：系统-->晶晨宝盒
             
-
+    - name: Remove old Releases
+      uses: dev-drprasad/delete-older-releases@v0.2.0
+      with:
+        keep_latest: 10
+        delete_tags: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+        
+    - name: Delete older workflow runs and artifacts
+      uses: Mattraks/delete-workflow-runs@v2
+      if: env.DELETE_ARTIFACTS == 'true'
+      with:
+          token: ${{ secrets.RELEASES_TOKEN }}
+          repository: ${{ github.repository }}
+          retain_days: ${{ env.KEEP_DAY }}
+          keep_minimum_runs: ${{ env.KEEP_MININUM_RUNS }}
