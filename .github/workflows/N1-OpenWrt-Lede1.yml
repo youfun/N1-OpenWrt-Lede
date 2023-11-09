@@ -41,6 +41,7 @@ jobs:
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
+        PACKAGED_OUTPUTPATH: ${{github.workspace}}/bin/output
       run: |
         docker rmi `docker images -q`
         sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android /opt/ghc
@@ -61,6 +62,8 @@ jobs:
         echo "useVersionInfo=$useVersionInfo" >> $GITHUB_ENV
         echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "tag_name=$(date +%Y%m%d)" >> $GITHUB_ENV
+        echo "::set-output name=status::success"
+        echo "::set-output name=PACKAGED_STATUS::success"
 
     - name: Load custom feeds
       run: |
