@@ -28,9 +28,9 @@ git clone https://github.com/xiaorouji/openwrt-passwall2.git package/passwall2
 #git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package/lean/luci-app-adguardhome
 
 #luci-app-filebrowser
-git clone  https://github.com/kenzok8/small-package  package/luci-app-filebrowser
+git clone  https://github.com/kenzok8/openwrt-packages  package/luci-app-filebrowser
 
 #luci-app-mosdns
-git clone  https://github.com/kenzok8/small-package  package/luci-app-mosdns
+git clone  https://github.com/kenzok8/openwrt-packages   package/luci-app-mosdns
 
 
