@@ -125,8 +125,10 @@ CONFIG_PACKAGE_sing-box=y
 CONFIG_PACKAGE_kmod-tun=y
 
 CONFIG_PACKAGE_luci-app-mosdns=y
-CONFIG_PACKAGE_luci-app-filebrowser=y	
 
+#luci-app-filebrowser和依赖
+CONFIG_PACKAGE_luci-app-filebrowser=y	
+CONFIG_PACKAGE_wrtbwmon=y	
 CONFIG_PACKAGE_bandwidthd=y	
 CONFIG_PACKAGE_libnetwork=y
 
